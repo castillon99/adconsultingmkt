@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+html { scroll-behavior: smooth; }
+body { margin: 0; font-family: 'Outfit', sans-serif; color: #0F172A; background: #FFFFFF; -webkit-font-smoothing: antialiased; }
+a { color: #2563EB; text-decoration: none; }
+a:hover { color: #E96B1B; }
+@keyframes floatUp { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+input, select, textarea, button { font-family: 'Outfit', sans-serif; }
+</style>
+</helmet>
+
+<!-- NAV -->
+<div style="position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);border-bottom:1px solid rgba(226,232,240,.9)">
+  <div style="max-width:1140px;margin:0 auto;padding:0 20px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+    <a href="#inicio" style="font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:#0B2A5C;display:flex;align-items:center;gap:9px;white-space:nowrap">
+      <span style="width:10px;height:10px;border-radius:50%;background:#E96B1B;display:block"></span>
+      Advice Consulting
+    </a>
+    <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:center;gap:26px">
+        <a href="#servicios" style="font-size:14px;font-weight:500;color:#64748B;white-space:nowrap" style-hover="color:#0B2A5C">Servicios</a>
+        <a href="#paquetes" style="font-size:14px;font-weight:500;color:#64748B;white-space:nowrap" style-hover="color:#0B2A5C">Paquetes</a>
+        <a href="#calculadora" style="font-size:14px;font-weight:500;color:#64748B;white-space:nowrap" style-hover="color:#0B2A5C">Calculadora</a>
+        <a href="#casos" style="font-size:14px;font-weight:500;color:#64748B;white-space:nowrap" style-hover="color:#0B2A5C">Casos</a>
+        <a href="#faq" style="font-size:14px;font-weight:500;color:#64748B;white-space:nowrap" style-hover="color:#0B2A5C">FAQ</a>
+        <a href="#contacto" style="background:#E96B1B;color:#fff;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;padding:10px 20px;border-radius:9px;white-space:nowrap" style-hover="background:#F97316;color:#fff">Agendar llamada</a>
+      </div>
+    </sc-if>
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ toggleMenu }}" style="background:none;border:none;cursor:pointer;padding:8px;display:flex;flex-direction:column;gap:5px">
+        <span style="width:22px;height:2px;background:#0B2A5C;display:block;border-radius:2px"></span>
+        <span style="width:22px;height:2px;background:#0B2A5C;display:block;border-radius:2px"></span>
+        <span style="width:22px;height:2px;background:#0B2A5C;display:block;border-radius:2px"></span>
+      </button>
+    </sc-if>
+  </div>
+  <sc-if value="{{ menuOpenMobile }}" hint-placeholder-val="{{ false }}">
+    <div style="background:#fff;border-bottom:1px solid #E2E8F0;padding:8px 20px 20px;display:flex;flex-direction:column;gap:2px">
+      <a href="#servicios" onClick="{{ closeMenu }}" style="padding:12px 4px;font-size:16px;font-weight:600;color:#0B2A5C;border-bottom:1px solid #F1F5F9">Servicios</a>
+      <a href="#paquetes" onClick="{{ closeMenu }}" style="padding:12px 4px;font-size:16px;font-weight:600;color:#0B2A5C;border-bottom:1px solid #F1F5F9">Paquetes</a>
+      <a href="#calculadora" onClick="{{ closeMenu }}" style="padding:12px 4px;font-size:16px;font-weight:600;color:#0B2A5C;border-bottom:1px solid #F1F5F9">Calculadora</a>
+      <a href="#casos" onClick="{{ closeMenu }}" style="padding:12px 4px;font-size:16px;font-weight:600;color:#0B2A5C;border-bottom:1px solid #F1F5F9">Casos</a>
+      <a href="#faq" onClick="{{ closeMenu }}" style="padding:12px 4px;font-size:16px;font-weight:600;color:#0B2A5C;border-bottom:1px solid #F1F5F9">FAQ</a>
+      <a href="#contacto" onClick="{{ closeMenu }}" style="margin-top:12px;background:#E96B1B;color:#fff;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;padding:13px;border-radius:10px;text-align:center" style-hover="color:#fff">Agendar llamada</a>
+    </div>
+  </sc-if>
+</div>
+
+<!-- HERO -->
+<section id="inicio" data-screen-label="Hero" style="background:linear-gradient(135deg,#081e42 0%,#0B2A5C 55%,#0d3570 100%);position:relative;overflow:hidden;padding:140px 20px 72px">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 85% 40%, rgba(37,99,235,.35) 0%, transparent 60%), radial-gradient(ellipse 40% 50% at 5% 90%, rgba(233,107,27,.18) 0%, transparent 55%)"></div>
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);background-size:56px 56px"></div>
+  <div style="max-width:1140px;margin:0 auto;position:relative;z-index:2">
+    <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#F97316;margin-bottom:20px;display:flex;align-items:center;gap:10px;animation:fadeUp .7s ease both">
+      <span style="width:32px;height:2px;background:#E96B1B;display:block"></span>
+      Monterrey, NL — Presencia digital para restaurantes
+    </div>
+    <h1 style="font-family:'Syne',sans-serif;font-size:clamp(38px,6.5vw,72px);font-weight:800;line-height:1.05;letter-spacing:-2px;color:#fff;margin:0 0 24px;max-width:800px;animation:fadeUp .7s ease .1s both">
+      Tu restaurante merece ser <em style="font-style:normal;color:#F97316;border-bottom:3px solid rgba(233,107,27,.5)">encontrado</em>
+    </h1>
+    <p style="font-size:clamp(16px,2.2vw,18px);color:rgba(255,255,255,.72);max-width:540px;line-height:1.7;margin:0 0 36px;animation:fadeUp .7s ease .2s both">
+      Creamos la presencia digital que tu negocio necesita — página web, menú digital, Google Maps y redes sociales — en menos de una semana.
+    </p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:56px;animation:fadeUp .7s ease .3s both">
+      <a href="https://wa.me/528120012509?text=Hola,%20me%20interesa%20saber%20m%C3%A1s%20sobre%20sus%20servicios" target="_blank" style="display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;padding:15px 26px;border-radius:11px;min-height:44px;box-sizing:border-box" style-hover="background:#1ebe5a;color:#fff">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        Hablar por WhatsApp
+      </a>
+      <a href="#calculadora" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:rgba(255,255,255,.9);font-family:'Syne',sans-serif;font-size:14px;font-weight:700;padding:15px 26px;border-radius:11px;border:2px solid rgba(255,255,255,.3);min-height:44px;box-sizing:border-box" style-hover="border-color:#fff;color:#fff">Calcular mi cotización</a>
+    </div>
+    <div style="display:flex;gap:clamp(24px,5vw,56px);flex-wrap:wrap;padding-top:30px;border-top:1px solid rgba(255,255,255,.12);animation:fadeUp .7s ease .4s both">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:34px;font-weight:800;color:#F97316;line-height:1">76%</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.55);max-width:150px;line-height:1.4;margin-top:6px">de personas visita el lugar tras buscarlo en Google</div>
+      </div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:34px;font-weight:800;color:#F97316;line-height:1">5–7 días</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.55);max-width:150px;line-height:1.4;margin-top:6px">tiempo de entrega completa</div>
+      </div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:34px;font-weight:800;color:#F97316;line-height:1">$199</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.55);max-width:150px;line-height:1.4;margin-top:6px">USD — desde, para arrancar tu presencia digital</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section id="problema" data-screen-label="El problema" style="padding:88px 20px;background:#F8FAFF">
+  <div style="max-width:1140px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px;align-items:center">
+    <div>
+      <span style="display:inline-block;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;background:#FFF0E6;color:#E96B1B;margin-bottom:16px">El problema</span>
+      <h2 style="font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.15;letter-spacing:-1px;color:#0B2A5C;margin:0">Clientes que quieren ir — pero no te encuentran</h2>
+      <p style="font-size:16px;color:#64748B;line-height:1.7;margin:16px 0 0;max-width:520px">Cada día sin presencia digital es un día en que alguien buscó exactamente lo que tú ofreces y eligió al restaurante de enfrente porque apareció primero. Eso tiene solución, y es más rápida de lo que imaginas.</p>
+      <div style="margin-top:28px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:baseline;gap:12px"><span style="width:8px;height:8px;border-radius:50%;background:#E96B1B;flex-shrink:0;position:relative;top:-1px"></span><span style="font-size:14px;color:#64748B">El <strong style="color:#0F172A">46%</strong> de las búsquedas en Google tienen intención local</span></div>
+        <div style="display:flex;align-items:baseline;gap:12px"><span style="width:8px;height:8px;border-radius:50%;background:#E96B1B;flex-shrink:0;position:relative;top:-1px"></span><span style="font-size:14px;color:#64748B">Solo el <strong style="color:#0F172A">23%</strong> de restaurantes en LATAM usa herramientas digitales activamente</span></div>
+        <div style="display:flex;align-items:baseline;gap:12px"><span style="width:8px;height:8px;border-radius:50%;background:#E96B1B;flex-shrink:0;position:relative;top:-1px"></span><span style="font-size:14px;color:#64748B">Fichas con más de <strong style="color:#0F172A">100 fotos</strong> reciben 520% más solicitudes de dirección</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:flex-start;gap:14px;background:#fff;border-radius:12px;padding:16px 20px;border:1px solid #E2E8F0" style-hover="border-color:#E96B1B">
+        <div style="width:36px;height:36px;border-radius:9px;background:#FFF0E6;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#E96B1B"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg></div>
+        <div style="font-size:14px;color:#64748B;line-height:1.6"><strong style="color:#0F172A;display:block;margin-bottom:2px">"Me preguntan dónde ver el menú y no tengo dónde mandarlo."</strong>Clientes activos que no pueden avanzar solos.</div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:14px;background:#fff;border-radius:12px;padding:16px 20px;border:1px solid #E2E8F0" style-hover="border-color:#E96B1B">
+        <div style="width:36px;height:36px;border-radius:9px;background:#FFF0E6;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#E96B1B"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+        <div style="font-size:14px;color:#64748B;line-height:1.6"><strong style="color:#0F172A;display:block;margin-bottom:2px">"No aparezco cuando buscan mi tipo de comida en mi zona."</strong>Tu competencia sí aparece. Tú no existes para ese cliente.</div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:14px;background:#fff;border-radius:12px;padding:16px 20px;border:1px solid #E2E8F0" style-hover="border-color:#E96B1B">
+        <div style="width:36px;height:36px;border-radius:9px;background:#FFF0E6;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#E96B1B"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg></div>
+        <div style="font-size:14px;color:#64748B;line-height:1.6"><strong style="color:#0F172A;display:block;margin-bottom:2px">"Tengo Instagram pero no sé qué publicar ni cuándo."</strong>El perfil existe, pero no genera clientes nuevos.</div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:14px;background:#fff;border-radius:12px;padding:16px 20px;border:1px solid #E2E8F0" style-hover="border-color:#E96B1B">
+        <div style="width:36px;height:36px;border-radius:9px;background:#FFF0E6;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#E96B1B"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+        <div style="font-size:14px;color:#64748B;line-height:1.6"><strong style="color:#0F172A;display:block;margin-bottom:2px">"Puse anuncios una vez y no me funcionó."</strong>Sin estrategia ni seguimiento, el presupuesto se va sin resultados.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios" data-screen-label="Servicios" style="padding:88px 20px;background:#fff">
+  <div style="max-width:1140px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:52px">
+      <span style="display:inline-block;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;background:#FFF0E6;color:#E96B1B;margin-bottom:16px">Servicios</span>
+      <h2 style="font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.15;letter-spacing:-1px;color:#0B2A5C;margin:0">Todo lo que necesita tu restaurante,<br>en un solo lugar</h2>
+      <p style="font-size:16px;color:#64748B;line-height:1.7;margin:12px auto 0;max-width:520px">Elige lo que necesitas o déjanos armar el paquete ideal para tu situación.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px">
+      <sc-for list="{{ services }}" as="s" hint-placeholder-count="8">
+        <div style="{{ s.cardStyle }}" style-hover="box-shadow:0 16px 48px rgba(11,42,92,.1);transform:translateY(-4px)">
+          <div style="{{ s.iconStyle }}"><span dc-props="{{ s.iconProps }}"></span></div>
+          <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:#0B2A5C;margin-bottom:8px">{{ s.name }}</div>
+          <div style="font-size:13.5px;color:#64748B;line-height:1.65;margin-bottom:16px">{{ s.desc }}</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <sc-for list="{{ s.chips }}" as="c" hint-placeholder-count="2">
+              <div style="background:#F1F5F9;border-radius:8px;padding:7px 12px">
+                <div style="font-size:10px;color:#64748B;font-weight:600">{{ c.lbl }}</div>
+                <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#0B2A5C">{{ c.amt }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ s.note }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:12px;font-size:11.5px;color:#1A4799;font-weight:600">{{ s.note }}</div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- PAQUETES -->
+<section id="paquetes" data-screen-label="Paquetes" style="padding:88px 20px;background:#F8FAFF">
+  <div style="max-width:1180px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:52px">
+      <span style="display:inline-block;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;background:#FFF0E6;color:#E96B1B;margin-bottom:16px">Paquetes</span>
+      <h2 style="font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.15;letter-spacing:-1px;color:#0B2A5C;margin:0">El precio que más conviene<br>según lo que necesitas</h2>
+      <p style="font-size:16px;color:#64748B;line-height:1.7;margin:12px auto 0;max-width:560px">Los paquetes siempre son más económicos que contratar los servicios por separado. O arma tu combo con la <a href="#calculadora" style="color:#2563EB;font-weight:600">calculadora</a>.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;align-items:start">
+      <sc-for list="{{ pkgs }}" as="p" hint-placeholder-count="4">
+        <div style="{{ p.cardStyle }}" style-hover="box-shadow:0 20px 60px rgba(11,42,92,.14)">
+          <sc-if value="{{ p.popular }}" hint-placeholder-val="{{ false }}">
+            <div style="display:inline-block;background:#E96B1B;color:#fff;font-family:'Syne',sans-serif;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:100px;margin-bottom:14px">★ Más popular</div>
+          </sc-if>
+          <div style="{{ p.tierStyle }}">{{ p.tier }}</div>
+          <div style="{{ p.priceStyle }}">{{ p.price }}</div>
+          <div style="{{ p.priceSubStyle }}">{{ p.priceSub }}</div>
+          <div style="{{ p.monthlyStyle }}">{{ p.monthly }}</div>
+          <sc-if value="{{ p.save }}" hint-placeholder-val="{{ false }}">
+            <div style="{{ p.saveStyle }}">{{ p.save }}</div>
+          </sc-if>
+          <sc-if value="{{ p.brand }}" hint-placeholder-val="{{ false }}">
+            <div style="{{ p.brandStyle }}">{{ p.brand }}</div>
+          </sc-if>
+          <div style="display:flex;flex-direction:column">
+            <sc-for list="{{ p.items }}" as="it" hint-placeholder-count="4">
+              <div style="{{ p.liStyle }}"><span style="color:{{ p.checkColor }};font-weight:800;flex-shrink:0">✓</span><span>{{ it }}</span></div>
+            </sc-for>
+          </div>
+          <a href="#contacto" style="{{ p.ctaStyle }}" style-hover="{{ p.ctaHover }}">Contratar</a>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULADORA -->
+<section id="calculadora" data-screen-label="Calculadora" style="padding:88px 20px;background:#fff">
+  <div style="max-width:1140px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:44px">
+      <span style="display:inline-block;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;background:#DBEAFE;color:#1A4799;margin-bottom:16px">Calculadora de precios</span>
+      <h2 style="font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.15;letter-spacing:-1px;color:#0B2A5C;margin:0">Arma tu paquete personalizado</h2>
+      <p style="font-size:16px;color:#64748B;line-height:1.7;margin:12px auto 0;max-width:520px">Selecciona solo los servicios que necesitas. Descuentos automáticos por volumen: 2 servicios −10%, 3 −15%, 4 o más −20%.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;align-items:start">
+      <div>
+        <div style="background:#F8FAFF;border-radius:16px;border:1px solid #E2E8F0;overflow:hidden">
+          <sc-for list="{{ calcItems }}" as="ci" hint-placeholder-count="9">
+            <sc-if value="{{ ci.isHead }}" hint-placeholder-val="{{ false }}">
+              <div style="{{ ci.headStyle }}">{{ ci.label }}</div>
+            </sc-if>
+            <sc-if value="{{ ci.isItem }}" hint-placeholder-val="{{ true }}">
+              <div onClick="{{ ci.onClick }}" style="{{ ci.rowStyle }}">
+                <div style="{{ ci.cbStyle }}">{{ ci.mark }}</div>
+                <div style="flex:1">
+                  <div style="font-weight:600;color:#0F172A;font-size:14px">{{ ci.name }}</div>
+                  <div style="font-size:12px;color:#64748B;margin-top:1px">{{ ci.hint }}</div>
+                </div>
+              </div>
+            </sc-if>
+          </sc-for>
+        </div>
+        <sc-if value="{{ hasMonthlyOptions }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:14px;background:#F8FAFF;border-radius:14px;border:1px solid #E2E8F0;overflow:hidden">
+            <div style="padding:10px 18px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#1e7e47;background:#EAFAF1;border-bottom:1px solid #E2E8F0">+ Mensualidades opcionales</div>
+            <sc-for list="{{ monthlyItems }}" as="mi" hint-placeholder-count="2">
+              <div onClick="{{ mi.onClick }}" style="{{ mi.rowStyle }}">
+                <div style="{{ mi.cbStyle }}">{{ mi.mark }}</div>
+                <div style="flex:1;font-size:13.5px;font-weight:600;color:#0F172A">{{ mi.name }}</div>
+                <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#1e7e47">{{ mi.amt }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <div style="background:#0B2A5C;border-radius:16px;padding:26px;color:#fff;position:sticky;top:84px">
+        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.12)">Tu cotización</div>
+        <sc-if value="{{ calcEmpty }}" hint-placeholder-val="{{ true }}">
+          <div style="color:rgba(255,255,255,.45);font-size:13.5px;font-style:italic;padding:10px 0">Selecciona los servicios que necesitas para ver el total.</div>
+        </sc-if>
+        <sc-if value="{{ calcHasSel }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <sc-for list="{{ crpLines }}" as="l" hint-placeholder-count="2">
+              <div style="display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.07)"><span>{{ l.name }}</span><span>{{ l.price }}</span></div>
+            </sc-for>
+            <sc-if value="{{ crpDisc }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#E96B1B;border-radius:7px;padding:5px 11px;font-size:12px;font-weight:700;display:inline-block;margin:10px 0">{{ crpDisc }}</div>
+            </sc-if>
+            <div style="display:flex;justify-content:space-between;font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#F0C07A;padding-top:10px;margin-top:4px;border-top:1px solid rgba(255,255,255,.2)"><span>TOTAL SETUP</span><span>{{ crpTotal }}</span></div>
+            <sc-if value="{{ crpRaw }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:11px;color:rgba(255,255,255,.4);text-align:right;margin-top:2px">{{ crpRaw }}</div>
+            </sc-if>
+            <sc-if value="{{ crpMonthly }}" hint-placeholder-val="{{ false }}">
+              <div style="background:rgba(64,145,108,.25);border-radius:10px;padding:12px;margin:12px 0 0">
+                <div style="font-size:11px;color:#6DCCA0;font-weight:700;text-transform:uppercase;letter-spacing:1px">Mensualidad seleccionada</div>
+                <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#6DCCA0">{{ crpMonthly }}</div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ crpPkg }}" hint-placeholder-val="{{ false }}">
+              <div style="background:rgba(233,107,27,.2);border-radius:10px;padding:12px;margin-top:12px;font-size:12.5px;line-height:1.55">{{ crpPkg }}</div>
+            </sc-if>
+            <a href="#contacto" style="display:block;text-align:center;padding:13px;background:#E96B1B;color:#fff;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-top:14px" style-hover="background:#F97316;color:#fff">Solicitar esta cotización</a>
+            <button onClick="{{ resetCalc }}" style="display:block;width:100%;text-align:center;padding:9px;background:transparent;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.15);border-radius:8px;font-size:12px;cursor:pointer;margin-top:8px" style-hover="border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.7)">↺ Limpiar selección</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section id="proceso" data-screen-label="Cómo trabajamos" style="padding:88px 20px;background:#0B2A5C;position:relative;overflow:hidden">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 90% 50%, rgba(37,99,235,.3) 0%, transparent 60%)"></div>
+  <div style="max-width:1140px;margin:0 auto;position:relative;z-index:1">
+    <div style="text-align:center;margin-bottom:56px">
+      <span style="display:inline-block;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;background:rgba(233,107,27,.2);color:#F97316;margin-bottom:16px">Cómo trabajamos</span>
+      <h2 style="font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.15;letter-spacing:-1px;color:#fff;margin:0">De la primera llamada<br>a tu presencia en línea</h2>
+      <p style="font-size:16px;color:rgba(255,255,255,.6);line-height:1.7;margin:12px auto 0;max-width:520px">Un proceso claro, sin sorpresas y con resultados en menos de una semana.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px">
+      <div style="text-align:center;padding:28px 20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px" style-hover="background:rgba(255,255,255,.1)">
+        <div style="width:48px;height:48px;background:#E96B1B;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;margin:0 auto 16px">1</div>
+        <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">Diagnóstico</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.6">Revisamos tu presencia digital actual y detectamos los puntos de mayor impacto para tu negocio.</div>
+        <div style="font-size:11px;color:#F97316;font-weight:700;margin-top:10px;letter-spacing:.5px">Día 1 — 30 min</div>
+      </div>
+      <div style="text-align:center;padding:28px 20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px" style-hover="background:rgba(255,255,255,.1)">
+        <div style="width:48px;height:48px;background:#E96B1B;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;margin:0 auto 16px">2</div>
+        <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">Branding y materiales</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.6">Definimos tu identidad visual y recopilamos fotos, menú e información del restaurante.</div>
+        <div style="font-size:11px;color:#F97316;font-weight:700;margin-top:10px;letter-spacing:.5px">Días 1–2 — Tú nos das el material</div>
+      </div>
+      <div style="text-align:center;padding:28px 20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px" style-hover="background:rgba(255,255,255,.1)">
+        <div style="width:48px;height:48px;background:#E96B1B;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;margin:0 auto 16px">3</div>
+        <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">Creación</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.6">Construimos la web, el menú, configuramos Google Maps, redes y todos los entregables acordados.</div>
+        <div style="font-size:11px;color:#F97316;font-weight:700;margin-top:10px;letter-spacing:.5px">Días 2–5 — Nosotros trabajamos</div>
+      </div>
+      <div style="text-align:center;padding:28px 20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px" style-hover="background:rgba(255,255,255,.1)">
+        <div style="width:48px;height:48px;background:#E96B1B;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;margin:0 auto 16px">4</div>
+        <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">Entrega y activación</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.6">Revisas, apruebas y publicamos todo. Tu restaurante ya aparece en Google y está activo en redes.</div>
+        <div style="font-size:11px;color:#F97316;font-weight:700;margin-top:10px;letter-spacing:.5px">Días 5–7 — En línea ✓</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASOS -->
+<section id="casos" data-screen-label="Casos" style="padding:88px 20px;background:#F8FAFF">
+  <div style="max-width:1140px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:52px">
+      <span style="display:inline-block;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;background:#FFF0E6;color:#E96B1B;margin-bottom:16px">Casos</span>
+      <h2 style="font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.15;letter-spacing:-1px;color:#0B2A5C;margin:0">Así se ve el trabajo<br>que entregamos</h2>
+      <p style="font-size:16px;color:#64748B;line-height:1.7;margin:12px auto 0;max-width:520px">Lo que pasa cuando tu restaurante tiene la presencia digital que merece.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px">
+      <div style="background:#fff;border-radius:18px;border:1px solid #E2E8F0;overflow:hidden" style-hover="box-shadow:0 16px 48px rgba(11,42,92,.1)">
+        <div style="background:#0B2A5C;padding:22px 26px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:#F97316"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path></svg></div>
+          <div style="flex:1;min-width:180px">
+            <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:#fff">Café de Especialidad — San Pedro</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.55);margin-top:2px">Cafetería de especialidad · Valle Oriente, Monterrey</div>
+          </div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.2);border-radius:100px;padding:3px 10px">Proyecto demo</div>
+        </div>
+        <div style="padding:22px 26px">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px">
+            <div style="text-align:center;background:#F8FAFF;border-radius:10px;padding:12px 6px"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#E96B1B">0→47</div><div style="font-size:11px;color:#64748B;line-height:1.3">reseñas en Google en 60 días</div></div>
+            <div style="text-align:center;background:#F8FAFF;border-radius:10px;padding:12px 6px"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#E96B1B">+280%</div><div style="font-size:11px;color:#64748B;line-height:1.3">búsquedas de descubrimiento</div></div>
+            <div style="text-align:center;background:#F8FAFF;border-radius:10px;padding:12px 6px"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#E96B1B">5 días</div><div style="font-size:11px;color:#64748B;line-height:1.3">tiempo de entrega completa</div></div>
+          </div>
+          <p style="font-size:14px;color:#64748B;font-style:italic;line-height:1.65;border-left:3px solid #E96B1B;padding-left:14px;margin:0">"Antes no aparecíamos en Google cuando alguien buscaba café en la zona. Ahora somos de los primeros resultados y los clientes nuevos nos mencionan que nos encontraron en Maps."</p>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px">
+            <span style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;background:#DBEAFE;color:#1A4799">Branding Básico</span>
+            <span style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;background:#DBEAFE;color:#1A4799">Página Web</span>
+            <span style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;background:#DBEAFE;color:#1A4799">Google Maps</span>
+            <span style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;background:#DBEAFE;color:#1A4799">Contenido mensual</span>
+          </div>
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:18px;border:1px solid #E2E8F0;overflow:hidden" style-hover="box-shadow:0 16px 48px rgba(11,42,92,.1)">
+        <div style="background:linear-gradient(135deg,#0B2A5C 0%,#1A4799 100%);padding:22px 26px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:#F97316"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path></svg></div>
+          <div style="flex:1;min-width:180px">
+            <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:#fff">Restaurante de Especialidad — Cumbres</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.55);margin-top:2px">Restaurante asiático · Cumbres, Monterrey</div>
+          </div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.2);border-radius:100px;padding:3px 10px">Proyecto demo</div>
+        </div>
+        <div style="padding:22px 26px">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px">
+            <div style="text-align:center;background:#F8FAFF;border-radius:10px;padding:12px 6px"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#E96B1B">4.8★</div><div style="font-size:11px;color:#64748B;line-height:1.3">promedio Google en 3 meses</div></div>
+            <div style="text-align:center;background:#F8FAFF;border-radius:10px;padding:12px 6px"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#E96B1B">+420%</div><div style="font-size:11px;color:#64748B;line-height:1.3">alcance en Instagram</div></div>
+            <div style="text-align:center;background:#F8FAFF;border-radius:10px;padding:12px 6px"><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#E96B1B">$699</div><div style="font-size:11px;color:#64748B;line-height:1.3">inversión inicial (paquete Pro)</div></div>
+          </div>
+          <p style="font-size:14px;color:#64748B;font-style:italic;line-height:1.65;border-left:3px solid #E96B1B;padding-left:14px;margin:0">"No teníamos ni página web ni menú digital. En una semana teníamos todo funcionando y el menú QR en cada mesa. Los clientes lo usan constantemente."</p>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:16px">
+            <span style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;background:#DBEAFE;color:#1A4799">Paquete Profesional</span>
+            <span style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;background:#DBEAFE;color:#1A4799">Fotografía</span>
+            <span style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;background:#DBEAFE;color:#1A4799">Meta Ads</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GARANTIA -->
+<section id="garantia" data-screen-label="Compromisos" style="padding:88px 20px;background:linear-gradient(135deg,#0B2A5C 0%,#0d3570 100%);position:relative;overflow:hidden">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 50% 80% at 100% 50%, rgba(233,107,27,.15) 0%, transparent 60%)"></div>
+  <div style="max-width:1140px;margin:0 auto;position:relative;z-index:1">
+    <div style="text-align:center;margin-bottom:44px">
+      <span style="display:inline-block;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;background:rgba(233,107,27,.2);color:#F97316;margin-bottom:16px">Nuestro compromiso</span>
+      <h2 style="font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.15;letter-spacing:-1px;color:#fff;margin:0">Trabajamos con<br>estándares claros</h2>
+      <p style="font-size:16px;color:rgba(255,255,255,.6);line-height:1.7;margin:12px auto 0;max-width:480px">Sabemos lo que prometemos. Por eso lo ponemos por escrito.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px">
+      <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:28px 24px;text-align:center" style-hover="background:rgba(255,255,255,.12)">
+        <div style="width:48px;height:48px;margin:0 auto 14px;border-radius:12px;background:rgba(233,107,27,.2);display:flex;align-items:center;justify-content:center;color:#F97316"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:10px">Entrega en 7 días o te avisamos antes</div>
+        <div style="font-size:13.5px;color:rgba(255,255,255,.6);line-height:1.65">Si hay algún retraso por nuestra parte, te notificamos con anticipación y ajustamos sin costo adicional.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:28px 24px;text-align:center" style-hover="background:rgba(255,255,255,.12)">
+        <div style="width:48px;height:48px;margin:0 auto 14px;border-radius:12px;background:rgba(233,107,27,.2);display:flex;align-items:center;justify-content:center;color:#F97316"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg></div>
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:10px">2 rondas de revisión incluidas</div>
+        <div style="font-size:13.5px;color:rgba(255,255,255,.6);line-height:1.65">Cada proyecto incluye dos rondas de ajustes sin costo. Tu aprobación es la que cuenta antes de publicar.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:28px 24px;text-align:center" style-hover="background:rgba(255,255,255,.12)">
+        <div style="width:48px;height:48px;margin:0 auto 14px;border-radius:12px;background:rgba(233,107,27,.2);display:flex;align-items:center;justify-content:center;color:#F97316"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg></div>
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:10px">Todo es tuyo, sin ataduras</div>
+        <div style="font-size:13.5px;color:rgba(255,255,255,.6);line-height:1.65">Tu web, tu dominio, tus cuentas. Si en algún momento decides cambiar, te entregamos todos los accesos sin complicaciones.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" data-screen-label="FAQ" style="padding:88px 20px;background:#fff">
+  <div style="max-width:900px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:48px">
+      <span style="display:inline-block;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;background:#DBEAFE;color:#1A4799;margin-bottom:16px">Preguntas frecuentes</span>
+      <h2 style="font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.15;letter-spacing:-1px;color:#0B2A5C;margin:0">Lo que siempre preguntan<br>los dueños de restaurante</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <sc-for list="{{ faqItems }}" as="f" hint-placeholder-count="8">
+        <div style="border:1px solid #E2E8F0;border-radius:12px;overflow:hidden">
+          <div onClick="{{ f.onClick }}" style="{{ f.qStyle }}">
+            <span>{{ f.q }}</span>
+            <span style="{{ f.arrowStyle }}">+</span>
+          </div>
+          <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:0 22px 18px;font-size:14px;color:#64748B;line-height:1.7">{{ f.a }}</div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" data-screen-label="Contacto" style="padding:88px 20px;background:#F8FAFF">
+  <div style="max-width:1140px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:48px">
+      <span style="display:inline-block;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;background:#FFF0E6;color:#E96B1B;margin-bottom:16px">Hablemos</span>
+      <h2 style="font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.15;letter-spacing:-1px;color:#0B2A5C;margin:0">¿Listo para que<br>te encuentren en Google?</h2>
+      <p style="font-size:16px;color:#64748B;line-height:1.7;margin:12px auto 0;max-width:560px">Agenda una llamada de 15 minutos sin costo. Te hacemos un diagnóstico de tu presencia actual y te decimos exactamente qué necesitas.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px;align-items:start">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#0B2A5C;margin-bottom:18px">Contáctanos directamente</div>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px">
+          <a href="https://wa.me/528120012509" target="_blank" style="display:flex;align-items:center;gap:14px;background:#fff;border-radius:12px;padding:16px 20px;border:1px solid #E2E8F0;color:inherit" style-hover="border-color:#E96B1B;color:inherit">
+            <span style="width:42px;height:42px;border-radius:10px;background:#EAFAF1;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#1e7e47"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span>
+            <span><span style="display:block;font-size:11px;color:#64748B;font-weight:600;text-transform:uppercase;letter-spacing:.8px">WhatsApp</span><span style="display:block;font-weight:700;color:#0B2A5C;font-size:15px">+52 81 2001 2509</span></span>
+          </a>
+          <a href="mailto:fcastillon@adconsulting.mx" style="display:flex;align-items:center;gap:14px;background:#fff;border-radius:12px;padding:16px 20px;border:1px solid #E2E8F0;color:inherit" style-hover="border-color:#E96B1B;color:inherit">
+            <span style="width:42px;height:42px;border-radius:10px;background:#DBEAFE;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#1A4799"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></span>
+            <span><span style="display:block;font-size:11px;color:#64748B;font-weight:600;text-transform:uppercase;letter-spacing:.8px">Email</span><span style="display:block;font-weight:700;color:#0B2A5C;font-size:15px">fcastillon@adconsulting.mx</span></span>
+          </a>
+          <div style="display:flex;align-items:center;gap:14px;background:#fff;border-radius:12px;padding:16px 20px;border:1px solid #E2E8F0">
+            <span style="width:42px;height:42px;border-radius:10px;background:#FFF0E6;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#E96B1B"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+            <span><span style="display:block;font-size:11px;color:#64748B;font-weight:600;text-transform:uppercase;letter-spacing:.8px">Cobertura</span><span style="display:block;font-weight:700;color:#0B2A5C;font-size:15px">Monterrey y Área Metropolitana</span></span>
+          </div>
+        </div>
+        <div style="background:#0B2A5C;border-radius:14px;padding:22px;color:#fff">
+          <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:8px">Respuesta en menos de 2 horas</div>
+          <div style="font-size:13.5px;color:rgba(255,255,255,.65);line-height:1.65">Lunes a viernes de 9am a 7pm. Sábados de 10am a 2pm. Te atendemos a la brevedad posible.</div>
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:18px;padding:30px;border:1px solid #E2E8F0">
+        <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#0B2A5C;margin-bottom:6px">Solicitar información</div>
+        <div style="font-size:13.5px;color:#64748B;margin-bottom:22px;line-height:1.5">Cuéntanos sobre tu restaurante y te contactamos en menos de 2 horas.</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:14px">
+          <div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:12px;font-weight:700;color:#0F172A">Nombre *</label><input value="{{ fNombre }}" onChange="{{ onNombre }}" type="text" placeholder="Tu nombre" style="padding:12px 14px;border:1.5px solid #E2E8F0;border-radius:9px;font-size:14px;color:#0F172A;background:#F8FAFF;outline:none" style-focus="border-color:#2563EB;background:#fff"></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><label style="font-size:12px;font-weight:700;color:#0F172A">Teléfono *</label><input value="{{ fTel }}" onChange="{{ onTel }}" type="tel" placeholder="+52 81 XXXX XXXX" style="padding:12px 14px;border:1.5px solid #E2E8F0;border-radius:9px;font-size:14px;color:#0F172A;background:#F8FAFF;outline:none" style-focus="border-color:#2563EB;background:#fff"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px"><label style="font-size:12px;font-weight:700;color:#0F172A">Nombre del restaurante *</label><input value="{{ fRest }}" onChange="{{ onRest }}" type="text" placeholder="¿Cómo se llama tu restaurante?" style="padding:12px 14px;border:1.5px solid #E2E8F0;border-radius:9px;font-size:14px;color:#0F172A;background:#F8FAFF;outline:none" style-focus="border-color:#2563EB;background:#fff"></div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px">
+          <label style="font-size:12px;font-weight:700;color:#0F172A">¿Qué te interesa?</label>
+          <select value="{{ fInteres }}" onChange="{{ onInteres }}" style="padding:12px 14px;border:1.5px solid #E2E8F0;border-radius:9px;font-size:14px;color:#0F172A;background:#F8FAFF;outline:none">
+            <option>Paquete Profesional</option>
+            <option>Paquete Esencial</option>
+            <option>Paquete Premium</option>
+            <option>Paquete Arranque</option>
+            <option>Servicios individuales</option>
+            <option>Solo una consulta gratuita</option>
+          </select>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px"><label style="font-size:12px;font-weight:700;color:#0F172A">Mensaje (opcional)</label><textarea value="{{ fMsg }}" onChange="{{ onMsg }}" placeholder="Cuéntanos sobre tu restaurante, zona, tipo de cocina..." style="padding:12px 14px;border:1.5px solid #E2E8F0;border-radius:9px;font-size:14px;color:#0F172A;background:#F8FAFF;outline:none;resize:vertical;min-height:90px" style-focus="border-color:#2563EB;background:#fff"></textarea></div>
+        <button onClick="{{ submitForm }}" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:#E96B1B;color:#fff;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;border:none;border-radius:10px;cursor:pointer;min-height:44px" style-hover="background:#F97316">Enviar mensaje</button>
+        <p style="font-size:11.5px;color:#64748B;text-align:center;margin:10px 0 0">✓ Sin costo · Sin compromiso · Respondemos en menos de 2 horas</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:#0B2A5C;padding:40px 20px 28px;color:rgba(255,255,255,.55)">
+  <div style="max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px">
+    <img src="assets/logo-blanco.png" alt="Advice Consulting" style="height:34px;width:auto;display:block">
+    <div style="font-size:13px">© 2026 Advice Consulting · Monterrey, NL · Todos los derechos reservados</div>
+    <div style="display:flex;gap:20px">
+      <a href="#servicios" style="font-size:13px;color:rgba(255,255,255,.55)" style-hover="color:#fff">Servicios</a>
+      <a href="#paquetes" style="font-size:13px;color:rgba(255,255,255,.55)" style-hover="color:#fff">Paquetes</a>
+      <a href="#contacto" style="font-size:13px;color:rgba(255,255,255,.55)" style-hover="color:#fff">Contacto</a>
+    </div>
+  </div>
+</footer>
+
+<!-- WA BUBBLE -->
+<a href="https://wa.me/528120012509?text=Hola,%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios" target="_blank" title="WhatsApp" style="position:fixed;bottom:24px;right:24px;z-index:999;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(37,211,102,.5);color:#fff" style-hover="transform:scale(1.08);color:#fff">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+</a>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    isDesktop: true, menuOpen: false,
+    sel: {}, mSel: {},
+    faqOpen: -1,
+    fNombre: '', fTel: '', fRest: '', fInteres: 'Paquete Profesional', fMsg: ''
+  };
+
+  componentDidMount() {
+    this.mq = window.matchMedia('(min-width: 880px)');
+    this.onMq = () => this.setState({ isDesktop: this.mq.matches, menuOpen: false });
+    this.onMq();
+    this.mq.addEventListener('change', this.onMq);
+  }
+  componentWillUnmount() { if (this.mq) this.mq.removeEventListener('change', this.onMq); }
+
+  SRVS = {
+    brand_bas:  { n: 'Branding Básico',      s: 149, m: 0,   brand: true,  hint: 'Setup: $149 USD · Paleta, tipografías, tono' },
+    brand_comp: { n: 'Branding Completo',    s: 299, m: 0,   brand: true,  hint: 'Setup: $299 USD · + Reglas de uso, guía PDF' },
+    web:        { n: 'Página Web',           s: 269, m: 59,  brand: false, hint: 'Setup: $269 USD · + $59/mes disponible' },
+    menu:       { n: 'Menú Digital + QR',    s: 109, m: 29,  brand: false, hint: 'Setup: $109 USD · + $29/mes disponible' },
+    google:     { n: 'Google Business Profile', s: 159, m: 49, brand: false, hint: 'Setup: $159 USD · + $49/mes disponible' },
+    redes:      { n: 'Setup Redes Sociales', s: 109, m: 0,   brand: false, hint: 'Setup: $109 USD' },
+    contenido:  { n: 'Gestión de Contenido', s: 0,   m: 149, brand: false, hint: 'Setup incluido · $149/mes' },
+    pauta:      { n: 'Campañas Meta Ads',    s: 89,  m: 99,  brand: false, hint: 'Setup: $89 USD · + $99/mes disponible' },
+    foto:       { n: 'Fotografía de Platillos', s: 199, m: 0, brand: false, hint: 'Por sesión: $199 USD' }
+  };
+  PKGS = {
+    arranque:    { n: 'Paquete Arranque',    s: 199,  m: 0,   srv: ['web','menu','google'] },
+    esencial:    { n: 'Paquete Esencial',    s: 399,  m: 149, srv: ['web','menu','google','redes','contenido'] },
+    profesional: { n: 'Paquete Profesional', s: 699,  m: 279, srv: ['web','menu','google','redes','contenido','pauta','foto'] },
+    premium:     { n: 'Paquete Premium',     s: 1100, m: 449, srv: ['web','menu','google','redes','contenido','pauta','foto'] }
+  };
+  FAQS = [
+    { q: '¿En cuánto tiempo tienen listo todo?', a: 'Entre 5 y 7 días hábiles para el paquete completo, contando desde que nos das los materiales. La página web y el Google Business pueden estar listos en 3 días.' },
+    { q: '¿El presupuesto de publicidad va incluido?', a: 'No. El presupuesto de Meta Ads o Google Ads lo invierte directamente el cliente en su cuenta. Nosotros cobramos solo la gestión y creación de campañas.' },
+    { q: '¿Necesito ya tener logo o colores definidos?', a: 'No es obligatorio, pero sí recomendable. Si no tienes identidad visual, el Estudio de Branding resuelve eso en 2–3 días antes de arrancar con el resto.' },
+    { q: '¿La página web es mía si dejo de contratar?', a: 'Sí, absolutamente. El código, el dominio y todos los accesos son tuyos desde el inicio. Si cancelas, te entregamos todo sin complicaciones.' },
+    { q: '¿Qué pasa si quiero cambiar el menú o los precios?', a: 'Cambios de menú, precios y horarios están incluidos en la mensualidad (1 actualización/mes en el plan básico, ilimitadas en planes superiores).' },
+    { q: '¿Puedo contratar solo un servicio sin paquete?', a: 'Sí. Puedes contratar cualquier servicio de forma individual. Los paquetes tienen descuento, pero si solo necesitas Google Maps o solo el menú digital, lo hacemos sin problema.' },
+    { q: '¿Trabajan fuera de Monterrey?', a: 'Por ahora trabajamos principalmente en Monterrey y Área Metropolitana. Para fotografía de platillos necesitamos presencia física; el resto de servicios puede ser remoto.' },
+    { q: '¿Cómo es el proceso de pago?', a: '50% al inicio del proyecto y 50% al entregar. Las mensualidades se cobran el mismo día cada mes. Aceptamos transferencia SPEI, tarjeta y PayPal.' }
+  ];
+
+  icon(paths) {
+    return React.createElement('svg', { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' },
+      paths.map((d, i) => React.createElement(d.t || 'path', Object.assign({ key: i }, d.p)))
+    );
+  }
+
+  toggleSrv(k) {
+    const sel = Object.assign({}, this.state.sel);
+    const mSel = Object.assign({}, this.state.mSel);
+    if (k === 'brand_bas' && sel.brand_comp) delete sel.brand_comp;
+    if (k === 'brand_comp' && sel.brand_bas) delete sel.brand_bas;
+    if (sel[k]) { delete sel[k]; delete mSel[k]; } else { sel[k] = true; }
+    this.setState({ sel, mSel });
+  }
+  toggleM(k) {
+    const mSel = Object.assign({}, this.state.mSel);
+    if (mSel[k]) delete mSel[k]; else mSel[k] = true;
+    this.setState({ mSel });
+  }
+
+  renderVals() {
+    const st = this.state;
+    const S = this.SRVS;
+
+    // ── services cards ──
+    const chipify = (arr) => arr;
+    const baseCard = 'border:2px solid #E2E8F0;border-radius:16px;padding:26px;background:#fff;transition:all .25s;box-sizing:border-box';
+    const iconBox = (bg, color) => 'width:48px;height:48px;border-radius:12px;background:' + bg + ';color:' + color + ';display:flex;align-items:center;justify-content:center;margin-bottom:16px';
+    const ic = this.icon.bind(this);
+    const icons = {
+      brand: ic([{ p: { d: 'M12 19l7-7 3 3-7 7-3-3z' } }, { p: { d: 'M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z' } }]),
+      web: ic([{ t: 'circle', p: { cx: 12, cy: 12, r: 10 } }, { t: 'line', p: { x1: 2, y1: 12, x2: 22, y2: 12 } }, { p: { d: 'M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z' } }]),
+      pin: ic([{ p: { d: 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z' } }, { t: 'circle', p: { cx: 12, cy: 10, r: 3 } }]),
+      menu: ic([{ t: 'rect', p: { x: 3, y: 3, width: 7, height: 7 } }, { t: 'rect', p: { x: 14, y: 3, width: 7, height: 7 } }, { t: 'rect', p: { x: 3, y: 14, width: 7, height: 7 } }, { t: 'rect', p: { x: 14, y: 14, width: 7, height: 7 } }]),
+      phone: ic([{ t: 'rect', p: { x: 5, y: 2, width: 14, height: 20, rx: 2 } }, { t: 'line', p: { x1: 12, y1: 18, x2: 12.01, y2: 18 } }]),
+      edit: ic([{ p: { d: 'M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7' } }, { p: { d: 'M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z' } }]),
+      target: ic([{ t: 'circle', p: { cx: 12, cy: 12, r: 10 } }, { t: 'circle', p: { cx: 12, cy: 12, r: 6 } }, { t: 'circle', p: { cx: 12, cy: 12, r: 2 } }]),
+      camera: ic([{ p: { d: 'M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z' } }, { t: 'circle', p: { cx: 12, cy: 13, r: 4 } }])
+    };
+    const services = [
+      { name: 'Estudio de Branding', desc: 'Analizamos la identidad visual de tu restaurante — logo, colores, carácter — y definimos una guía de marca coherente para todos tus materiales digitales.', cardStyle: 'border:2px solid #1A4799;border-radius:16px;padding:26px;background:linear-gradient(145deg,#F4F8FF 0%,#fff 70%);transition:all .25s;box-sizing:border-box', iconStyle: iconBox('#DBEAFE', '#1A4799'), iconProps: { children: icons.brand }, chips: chipify([{ lbl: 'Básico', amt: '$149' }, { lbl: 'Completo', amt: '$299' }]), note: 'Incluido en Paquetes Profesional y Premium' },
+      { name: 'Página Web', desc: 'Sitio profesional publicado en tu propio dominio, optimizado para móvil y con SEO local para que Google te encuentre.', cardStyle: baseCard, iconStyle: iconBox('#DBEAFE', '#1A4799'), iconProps: { children: icons.web }, chips: chipify([{ lbl: 'Setup único', amt: '$269' }, { lbl: 'Mensualidad', amt: '$59' }]), note: '' },
+      { name: 'Google Business Profile', desc: 'Aparece en Google Maps cuando alguien busca tu tipo de restaurante en tu zona. El servicio de mayor impacto para atraer clientes nuevos.', cardStyle: 'border:2px solid #E96B1B;border-radius:16px;padding:26px;background:linear-gradient(145deg,#FFF8F3 0%,#fff 60%);transition:all .25s;box-sizing:border-box', iconStyle: iconBox('#FFF0E6', '#E96B1B'), iconProps: { children: icons.pin }, chips: chipify([{ lbl: 'Setup único', amt: '$159' }, { lbl: 'Mensualidad', amt: '$49' }]), note: 'El de mayor impacto — recomendado' },
+      { name: 'Menú Digital + QR', desc: 'Menú visual diseñado para compartir por WhatsApp, mostrar en tu perfil y escanear en mesa con código QR imprimible.', cardStyle: baseCard, iconStyle: iconBox('#EAFAF1', '#1e7e47'), iconProps: { children: icons.menu }, chips: chipify([{ lbl: 'Setup único', amt: '$109' }, { lbl: 'Mensualidad', amt: '$29' }]), note: '' },
+      { name: 'Setup de Redes Sociales', desc: 'Instagram y Facebook configurados con identidad visual coherente, bio optimizada y primeras piezas de contenido.', cardStyle: baseCard, iconStyle: iconBox('#DBEAFE', '#2563EB'), iconProps: { children: icons.phone }, chips: chipify([{ lbl: 'Setup único', amt: '$109' }]), note: '' },
+      { name: 'Gestión de Contenido', desc: '10–12 posts mensuales diseñados, escritos y programados. Tú solo apruebas. Calendario editorial incluido.', cardStyle: baseCard, iconStyle: iconBox('#FFF0E6', '#E96B1B'), iconProps: { children: icons.edit }, chips: chipify([{ lbl: 'Setup', amt: 'Incluido' }, { lbl: 'Mensualidad', amt: '$149' }]), note: '' },
+      { name: 'Campañas Meta Ads', desc: 'Publicidad segmentada en Facebook e Instagram para llegar a clientes potenciales en tu zona con el mensaje correcto.', cardStyle: baseCard, iconStyle: iconBox('#FFF0E6', '#E96B1B'), iconProps: { children: icons.target }, chips: chipify([{ lbl: 'Setup único', amt: '$89' }, { lbl: 'Mensualidad', amt: '$99' }]), note: '' },
+      { name: 'Fotografía de Platillos', desc: 'Sesión fotográfica y edición de 10–15 platillos en alta resolución para web, menú y redes sociales.', cardStyle: baseCard, iconStyle: iconBox('#DBEAFE', '#1A4799'), iconProps: { children: icons.camera }, chips: chipify([{ lbl: 'Por sesión', amt: '$199' }]), note: '' }
+    ];
+
+    // ── packages ──
+    const liL = 'padding:7px 0;border-bottom:1px solid rgba(0,0,0,.05);color:#64748B;display:flex;align-items:baseline;gap:8px;font-size:13px;line-height:1.45';
+    const liD = 'padding:7px 0;border-bottom:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.75);display:flex;align-items:baseline;gap:8px;font-size:13px;line-height:1.45';
+    const ctaL = 'display:block;text-align:center;margin-top:18px;padding:12px;border-radius:9px;font-family:Syne,sans-serif;font-size:13px;font-weight:700;border:2px solid #E96B1B;color:#E96B1B';
+    const pkgs = [
+      { tier: 'Arranque', popular: false, price: '$199', priceSub: 'USD · pago único', monthly: 'Sin mensualidad obligatoria', save: '', brand: '',
+        items: ['Página Web básica (3 secciones)', 'Menú Digital + QR', 'Google Business básico'],
+        cardStyle: 'background:#fff;border-radius:18px;border:2px solid #E2E8F0;padding:26px 22px;box-sizing:border-box', tierStyle: 'font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#64748B;margin-bottom:8px;font-family:Syne,sans-serif', priceStyle: 'font-family:Syne,sans-serif;font-size:32px;font-weight:800;color:#0B2A5C;line-height:1', priceSubStyle: 'font-size:12px;color:#64748B;margin:4px 0 12px', monthlyStyle: 'background:#F1F5F9;border-radius:8px;padding:8px 12px;font-size:12.5px;font-weight:600;color:#64748B;margin-bottom:14px', saveStyle: '', brandStyle: '', liStyle: liL, checkColor: '#1e7e47', ctaStyle: ctaL, ctaHover: 'background:#E96B1B;color:#fff' },
+      { tier: 'Esencial', popular: false, price: '$399', priceSub: 'USD · pago en 2 partes', monthly: '+ $149 USD / mes', save: 'Ahorras $247 vs servicios individuales', brand: '',
+        items: ['Página Web (5 secciones)', 'Menú Digital + QR', 'Google Business optimizado', 'Setup Redes Sociales', '8 posts mensuales + reporte'],
+        cardStyle: 'background:#fff;border-radius:18px;border:2px solid #E2E8F0;padding:26px 22px;box-sizing:border-box', tierStyle: 'font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#64748B;margin-bottom:8px;font-family:Syne,sans-serif', priceStyle: 'font-family:Syne,sans-serif;font-size:32px;font-weight:800;color:#0B2A5C;line-height:1', priceSubStyle: 'font-size:12px;color:#64748B;margin:4px 0 12px', monthlyStyle: 'background:#F1F5F9;border-radius:8px;padding:8px 12px;font-size:13px;font-weight:700;color:#0F172A;margin-bottom:10px', saveStyle: 'background:#EAFAF1;color:#1e7e47;border-radius:6px;padding:5px 10px;font-size:11.5px;font-weight:700;text-align:center;margin-bottom:14px', brandStyle: '', liStyle: liL, checkColor: '#1e7e47', ctaStyle: ctaL, ctaHover: 'background:#E96B1B;color:#fff' },
+      { tier: 'Profesional', popular: true, price: '$699', priceSub: 'USD · pago en 2 partes', monthly: '+ $279 USD / mes', save: 'Ahorras $384 vs servicios individuales', brand: 'Branding Básico incluido',
+        items: ['Estudio de Branding Básico', 'Página Web (8 secciones + galería)', 'Menú Digital + QR', 'Google Business optimizado', 'Setup Redes Sociales', 'Fotografía de 10 platillos', '12–16 posts mensuales', '1 campaña Meta Ads', 'Community management', 'Reporte mensual'],
+        cardStyle: 'background:#0B2A5C;border-radius:18px;border:2px solid #E96B1B;padding:26px 22px;box-shadow:0 24px 64px rgba(11,42,92,.25);box-sizing:border-box', tierStyle: 'font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.5);margin-bottom:8px;font-family:Syne,sans-serif', priceStyle: 'font-family:Syne,sans-serif;font-size:32px;font-weight:800;color:#fff;line-height:1', priceSubStyle: 'font-size:12px;color:rgba(255,255,255,.5);margin:4px 0 12px', monthlyStyle: 'background:rgba(255,255,255,.1);border-radius:8px;padding:8px 12px;font-size:13px;font-weight:700;color:#fff;margin-bottom:10px', saveStyle: 'background:rgba(64,145,108,.25);color:#6DCCA0;border-radius:6px;padding:5px 10px;font-size:11.5px;font-weight:700;text-align:center;margin-bottom:12px', brandStyle: 'display:inline-block;background:rgba(233,107,27,.22);border:1px solid rgba(249,115,22,.5);color:#F0C07A;font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;margin-bottom:12px', liStyle: liD, checkColor: '#6DCCA0', ctaStyle: 'display:block;text-align:center;margin-top:18px;padding:12px;border-radius:9px;font-family:Syne,sans-serif;font-size:13px;font-weight:700;background:#E96B1B;border:2px solid #E96B1B;color:#fff', ctaHover: 'background:#F97316;color:#fff' },
+      { tier: 'Premium', popular: false, price: '$1,100', priceSub: 'USD · pago en 2 partes', monthly: '+ $449 USD / mes', save: '', brand: 'Branding Completo incluido',
+        items: ['Branding Completo + guía de marca', 'Todo lo del Profesional', 'Sesión fotográfica completa', 'Google Ads local', 'Estrategia editorial 3 meses', '20+ posts + reels', '2 campañas de pauta activas', 'Reunión mensual de estrategia'],
+        cardStyle: 'background:#fff;border-radius:18px;border:2px solid #E2E8F0;padding:26px 22px;box-sizing:border-box', tierStyle: 'font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#64748B;margin-bottom:8px;font-family:Syne,sans-serif', priceStyle: 'font-family:Syne,sans-serif;font-size:32px;font-weight:800;color:#0B2A5C;line-height:1', priceSubStyle: 'font-size:12px;color:#64748B;margin:4px 0 12px', monthlyStyle: 'background:#F1F5F9;border-radius:8px;padding:8px 12px;font-size:13px;font-weight:700;color:#0F172A;margin-bottom:10px', saveStyle: '', brandStyle: 'display:inline-block;background:#FFF0E6;border:1px solid #F5C9A8;color:#C2570F;font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;margin-bottom:12px', liStyle: liL, checkColor: '#1e7e47', ctaStyle: ctaL, ctaHover: 'background:#E96B1B;color:#fff' }
+    ];
+
+    // ── calculator ──
+    const order = ['HEAD_BRAND', 'brand_bas', 'brand_comp', 'HEAD_DIG', 'web', 'menu', 'google', 'redes', 'contenido', 'pauta', 'foto'];
+    const calcItems = order.map((k) => {
+      if (k === 'HEAD_BRAND') return { isHead: true, isItem: false, label: 'Branding — recomendado como paso previo', headStyle: 'background:#DBEAFE;padding:10px 20px;font-family:Syne,sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#1A4799;border-bottom:1px solid #E2E8F0' };
+      if (k === 'HEAD_DIG') return { isHead: true, isItem: false, label: 'Servicios digitales', headStyle: 'background:#F1F5F9;padding:10px 20px;font-family:Syne,sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#64748B;border-bottom:1px solid #E2E8F0;border-top:1px solid #E2E8F0' };
+      const on = !!st.sel[k];
+      return {
+        isHead: false, isItem: true,
+        name: S[k].n, hint: S[k].hint,
+        onClick: () => this.toggleSrv(k),
+        rowStyle: 'display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid #E2E8F0;cursor:pointer;user-select:none;min-height:44px;box-sizing:border-box;background:' + (on ? 'rgba(233,107,27,.07)' : 'transparent'),
+        cbStyle: 'width:22px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;color:#fff;transition:all .18s;border:2px solid ' + (on ? '#E96B1B;background:#E96B1B' : '#CBD5E1;background:#fff'),
+        mark: on ? '✓' : ''
+      };
+    });
+
+    const selKeys = Object.keys(st.sel);
+    const monthlyRel = selKeys.filter((k) => S[k].m > 0);
+    const monthlyItems = monthlyRel.map((k) => {
+      const on = !!st.mSel[k];
+      return {
+        name: S[k].n, amt: '$' + S[k].m + '/mes',
+        onClick: () => this.toggleM(k),
+        rowStyle: 'display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid #E2E8F0;cursor:pointer;user-select:none;background:' + (on ? 'rgba(30,126,71,.06)' : 'transparent'),
+        cbStyle: 'width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;color:#fff;border:2px solid ' + (on ? '#1e7e47;background:#1e7e47' : '#CBD5E1;background:#fff'),
+        mark: on ? '✓' : ''
+      };
+    });
+
+    const brandK = selKeys.filter((k) => S[k].brand);
+    const digK = selKeys.filter((k) => !S[k].brand && S[k].s > 0);
+    const brandR = brandK.reduce((a, k) => a + S[k].s, 0);
+    const digR = digK.reduce((a, k) => a + S[k].s, 0);
+    const n = digK.length;
+    const pct = n === 2 ? .10 : n === 3 ? .15 : n >= 4 ? .20 : 0;
+    const disc = Math.round(digR * pct);
+    const total = digR - disc + brandR;
+    const rawAll = digR + brandR;
+    const mTotal = Object.keys(st.mSel).reduce((a, k) => a + S[k].m, 0);
+
+    let best = null;
+    for (const pid of Object.keys(this.PKGS)) {
+      const pkg = this.PKGS[pid];
+      if (digK.length && digK.every((k) => pkg.srv.includes(k)) && pkg.s <= (digR - disc) && (!best || pkg.s < this.PKGS[best].s)) best = pid;
+    }
+
+    const crpLines = selKeys.map((k) => ({ name: S[k].n, price: S[k].s > 0 ? '$' + S[k].s : '—' }));
+
+    // ── FAQ ──
+    const faqItems = this.FAQS.map((f, i) => {
+      const open = st.faqOpen === i;
+      return {
+        q: f.q, a: f.a, open,
+        onClick: () => this.setState({ faqOpen: open ? -1 : i }),
+        qStyle: 'display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 22px;cursor:pointer;font-weight:600;color:#0B2A5C;font-size:14.5px;user-select:none;background:' + (open ? '#F8FAFF' : '#fff'),
+        arrowStyle: 'font-size:20px;color:#E96B1B;flex-shrink:0;transition:transform .25s;transform:rotate(' + (open ? '45deg' : '0deg') + ')'
+      };
+    });
+
+    // ── form ──
+    const setF = (key) => (e) => this.setState({ [key]: e.target.value });
+    const submitForm = () => {
+      const subject = 'Solicitud de información — ' + (st.fRest || 'Restaurante');
+      const body = 'Nombre: ' + st.fNombre + '\nTeléfono: ' + st.fTel + '\nRestaurante: ' + st.fRest + '\nInterés: ' + st.fInteres + '\n\nMensaje:\n' + st.fMsg;
+      window.location.href = 'mailto:fcastillon@adconsulting.mx?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    };
+
+    return {
+      isDesktop: st.isDesktop,
+      isMobile: !st.isDesktop,
+      menuOpenMobile: !st.isDesktop && st.menuOpen,
+      toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      services, pkgs, calcItems, monthlyItems,
+      hasMonthlyOptions: monthlyRel.length > 0,
+      calcEmpty: selKeys.length === 0,
+      calcHasSel: selKeys.length > 0,
+      crpLines,
+      crpDisc: pct > 0 ? 'Descuento combo −' + (pct * 100) + '% = −$' + disc : '',
+      crpTotal: '$' + total.toLocaleString('en-US') + ' USD',
+      crpRaw: total < rawAll ? 'Sin descuento: $' + rawAll + ' USD' : '',
+      crpMonthly: mTotal > 0 ? '$' + mTotal + ' USD/mes' : '',
+      crpPkg: best ? '💡 ' + this.PKGS[best].n + ' = $' + this.PKGS[best].s.toLocaleString('en-US') + ' USD — incluye más entregables al mismo precio o menor.' : '',
+      resetCalc: () => this.setState({ sel: {}, mSel: {} }),
+      faqItems,
+      fNombre: st.fNombre, fTel: st.fTel, fRest: st.fRest, fInteres: st.fInteres, fMsg: st.fMsg,
+      onNombre: setF('fNombre'), onTel: setF('fTel'), onRest: setF('fRest'), onInteres: setF('fInteres'), onMsg: setF('fMsg'),
+      submitForm
+    };
+  }
+}
+</script>
+</body>
+</html>
